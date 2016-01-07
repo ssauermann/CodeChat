@@ -1,0 +1,10 @@
+{
+    "name": "CodeChat",
+    "version": "0.0.1",
+    "description": "Code chat with websockets",
+	"author": "SauermannS",
+	"dependencies" : {
+		"express": "4.x",
+		"socket.io": "*"
+	}
+}
