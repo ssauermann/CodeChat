@@ -29,6 +29,10 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function () {
         io.sockets.emit('chat', {time: new Date(), text: 'User disconnected from the server!'});
     });
+    
+    socket.on('code', function (data) {
+        io.sockets.emit('code', {time: new Date(), name: data.name || 'Anonym', code: data.code });
+    });
 });
 
 console.log('listening on *:' + conf.port + "\n");

@@ -5,10 +5,8 @@
 
     function editCode() {
         $('#code *').attr('contentEditable', 'true');
-        $('#edit').toggleClass('btn-primary');
-        $('#edit').toggleClass('btn-success');
-        $('#edit').html('Send');
-        $('#edit').attr('id', 'sendCode');
+        $('#sendCode').removeClass('disabled');
+        $('#edit').addClass('disabled');
     }
     
     $(document).ready(function () {
