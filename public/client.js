@@ -1,13 +1,11 @@
 /*jslint browser: true, es5: true*/
-/*global $, jQuery, alert, io, console*/
+/*global $, jQuery, alert, io, console, hljs, Worker*/
 (function () {
     "use strict";
 
     console.log("Starting chat client");
     
-    var sentCodes = [],
-    
-        editClickCount = 0;
+    var sentCodes = [];
     
     function formatTime(time) {
         return '[' + (time.getHours() < 10 ? '0' : '') + time.getHours() + ':' +
@@ -95,6 +93,16 @@
         
         $('#chat').on('click', '.codeLink', function () {
             displayCode($(this).data('codeID'));
+        });
+        
+        $('#code').on('input', function () {
+            var code = $('#code'),
+                worker = new Worker('highlighter.js');
+            worker.onmessage = function (event) {
+                code.html(event.data);
+            };
+            worker.postMessage(code.text());
+            
         });
     });
     
