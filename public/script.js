@@ -4,7 +4,7 @@
     "use strict";
 
     function editCode() {
-        $('#code *').attr('contentEditable', 'true');
+        $('#code').attr('contentEditable', 'true');
         $('#sendCode').removeClass('disabled');
         $('#edit').addClass('disabled');
     }

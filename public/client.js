@@ -39,7 +39,7 @@
     }
     
     function nonEditCode() {
-        $('#code *').attr('contentEditable', 'false');
+        $('#code').attr('contentEditable', 'false');
         $('#sendCode').addClass('disabled');
         $('#edit').removeClass('disabled');
     }
