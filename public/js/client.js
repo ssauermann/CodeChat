@@ -95,9 +95,9 @@
             displayCode($(this).data('codeID'));
         });
         
-        $('#code').on('input', function () {
+        $('#code').on('blur', function () {
             var code = $('#code'),
-                worker = new Worker('highlighter.js');
+                worker = new Worker('highlighterjs/worker.js');
             worker.onmessage = function (event) {
                 code.html(event.data);
             };
