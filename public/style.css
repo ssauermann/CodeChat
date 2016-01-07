@@ -1,40 +1,19 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
 body {
-    margin: 0;
-    padding: 0;
+    padding-top: 50px;
+    padding-bottom: 20px;
     font: Helvetica, Arial, sans-serif;
     color: #333;
 }
 
-header, footer {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: auto;
-    padding: 0 0.5em;
-    background-color: dimgray;
-    font-size: 24px;
-    line-height: 2em;
-    height: 2em;
-    color: white;
+#chat{
+    margin-bottom: 25px;
 }
 
-header {
-    font-weight: bold;
-}
-
-footer{
-	top: auto;
-	bottom: 0;
-}
-
-input{
-	height: 1.5em;
-	font-size: 14px;
-}
-
-#content{
-	margin: 48px 0.5em;
+#chat li{
 	list-style: none;
 }
