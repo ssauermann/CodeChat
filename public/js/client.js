@@ -1,11 +1,13 @@
 /*jslint browser: true, es5: true*/
-/*global $, jQuery, alert, io, console, hljs, Worker*/
+/*global $, jQuery, alert, io, console, hljs, Worker, Dropzone, FileReader*/
 (function () {
     "use strict";
 
     console.log("Starting chat client");
     
     var sentCodes = [];
+    
+    Dropzone.autoDiscover = false;
     
     function formatTime(time) {
         return '[' + (time.getHours() < 10 ? '0' : '') + time.getHours() + ':' +
@@ -36,10 +38,27 @@
         $('#text').val('');
     }
     
+    function updateHighlight() {
+        var code = $('#code'),
+            worker = new Worker('highlightjs/worker.js');
+        worker.onmessage = function (event) {
+            code.html(event.data);
+        };
+        worker.postMessage(code.text());
+    }
+    
+    function editCode() {
+        $('#code').attr('contentEditable', 'true');
+        $('#sendCode').removeClass('disabled');
+        $('#edit').addClass('disabled');
+        updateHighlight();
+    }
+    
     function nonEditCode() {
         $('#code').attr('contentEditable', 'false');
         $('#sendCode').addClass('disabled');
         $('#edit').removeClass('disabled');
+        updateHighlight();
     }
     
     function sendCode(socket) {
@@ -71,7 +90,69 @@
         
         $('body').scrollTop($('body')[0].scrollHeight);
     }
-   
+    
+    function initDropzone() {
+        
+        function handleDrop(event) {
+            event.preventDefault();
+            
+            $(event.currentTarget).css('outline', 'none');
+            
+            var files = event.originalEvent.dataTransfer.files,
+                        
+                reader = new FileReader();
+                        
+            reader.onload = (function (file) {
+                console.log(file.name);
+                return function (e) {
+                    $('#snippetTitle').val(file.name);
+                    $('#code').text(reader.result);
+                    
+                    editCode();
+                };
+            }(files[0]));
+            
+            reader.readAsText(files[0]);
+            
+        }
+        
+        function handleDragOver(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        
+        function handleDragEnter(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            $(event.currentTarget).css('outline', '4px solid #0B85A1');
+        }
+                
+        var dropZone = $('.main pre');
+        
+        $(document).on('dragenter', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        $(document).on('dragover', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropZone.css('outline', '4px dotted #0B85A1');
+        });
+        $(document).on('drop', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropZone.css('outline', 'none');
+        });
+        $("document").on('dragleave', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropZone.css('outline', 'none');
+        });
+        
+        dropZone.on('dragenter', handleDragEnter);
+        dropZone.on('dragover', handleDragOver);
+        dropZone.on('drop', handleDrop);
+    }
     
     $(document).ready(function () {
         var socket = io.connect();
@@ -95,15 +176,10 @@
             displayCode($(this).data('codeID'));
         });
         
-        $('#code').on('blur', function () {
-            var code = $('#code'),
-                worker = new Worker('highlighterjs/worker.js');
-            worker.onmessage = function (event) {
-                code.html(event.data);
-            };
-            worker.postMessage(code.text());
-            
-        });
+        $('#code').on('blur', updateHighlight);
+        
+        initDropzone();
+        
     });
     
 }());

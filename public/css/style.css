@@ -47,10 +47,11 @@ body {
 
 .main .page-header {
     margin-top: 15px;
+    margin-bottom: 5px;
 }
 
 pre {
-    padding: 0;
+    margin-top: 5px;    
     background-color: #232323;
     border-style: none;
 }
