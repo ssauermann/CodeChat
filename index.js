@@ -19,10 +19,19 @@ app.get('/', function (req, res) {
 io.sockets.on('connection', function (socket) {
     console.log('user connected\n');
     
-    socket.emit('chat', {time: new Date(), text: 'You are now connected to the server!' });
+    socket.emit('chat', {time: new Date(), text: 'You are now connected to the server!'});
+    socket.broadcast.emit('chat', {time: new Date(), text: 'User connected to the server!'});
     
     socket.on('chat', function (data) {
         io.sockets.emit('chat', {time: new Date(), name: data.name || 'Anonym', text: data.text });
+    });
+    
+    socket.on('disconnect', function () {
+        io.sockets.emit('chat', {time: new Date(), text: 'User disconnected from the server!'});
+    });
+    
+    socket.on('code', function (data) {
+        io.sockets.emit('code', {time: new Date(), name: data.name || 'Anonym', code: data.code, title: data.title || 'unnamed snippet' });
     });
 });
 
