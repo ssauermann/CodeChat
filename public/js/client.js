@@ -62,9 +62,10 @@
     function sendCode(socket) {
         console.log("Sending code");
         var name = $('#name').val(),
-            code = $('#code').text();
+            code = $('#code').text(),
+            title = $('#snippetTitle').val();
         
-        socket.emit('code', {name: name, code: code});
+        socket.emit('code', {name: name, code: code, title: title});
         nonEditCode();
     }
     
@@ -80,7 +81,7 @@
             $('<li></li>').append(
                 $('<span>').text(formatTime(time)),
                 $('<b>').text(typeof (data.name) !== 'undefined' ? data.name + ': ' : ''),
-                $('<a class="codeLink">Click here to show this code</a>').data('codeID', sentCodes.length)
+                $('<a class="codeLink">Click here to show "' + data.title + '"</a>').data('codeID', sentCodes.length)
             )
         );
         

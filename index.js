@@ -31,7 +31,7 @@ io.sockets.on('connection', function (socket) {
     });
     
     socket.on('code', function (data) {
-        io.sockets.emit('code', {time: new Date(), name: data.name || 'Anonym', code: data.code });
+        io.sockets.emit('code', {time: new Date(), name: data.name || 'Anonym', code: data.code, title: data.title || 'unnamed snippet' });
     });
 });
 
