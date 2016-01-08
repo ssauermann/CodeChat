@@ -6,9 +6,7 @@
     console.log("Starting chat client");
     
     var sentCodes = [];
-    
-    Dropzone.autoDiscover = false;
-    
+        
     function formatTime(time) {
         return '[' + (time.getHours() < 10 ? '0' : '') + time.getHours() + ':' +
             (time.getMinutes() < 10 ? '0' : '') + time.getMinutes() + '] ';
