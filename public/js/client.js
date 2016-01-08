@@ -167,8 +167,16 @@
         });
         
         $('.main').on('click', '#sendCode', function () {
-            sendCode(socket);
+            if (!$('#sendCode').hasClass('disabled')) {
+                sendCode(socket);
+            }
         });
+        $('#edit').click(function () {
+            if (!$('#edit').hasClass('disabled')) {
+                editCode();
+            }
+        });
+        
         socket.on('code', displayCodeMessage);
         
         $('#chat').on('click', '.codeLink', function () {
